@@ -3,7 +3,7 @@
 
 #include "G7Reader.h"
 
-std::string get_asset_type_name(uint64_t assetType)
+static std::string get_asset_type_name(uint64_t assetType)
 {
     switch (assetType)
     {
@@ -54,13 +54,13 @@ int read_file(const char *filepath, const std::string &outpath)
 {
     FILE* input_file;
     errno_t err = fopen_s(&input_file, filepath, "rb");
-    if (!input_file)
+    if (err)
     {
         std::cerr << "Unable to open file " << filepath << std::endl;
         return 1;
     }
 
-    G7Header header;
+    G7Header header{};
     fread(&header.magic, 4, 1, input_file);
     fread(&header.unknown, 4, 1, input_file);
     fread(&header.table_count, 4, 1, input_file);
@@ -71,7 +71,7 @@ int read_file(const char *filepath, const std::string &outpath)
 
     for (unsigned int i = 0; i < header.table_count; i++)
     {
-        G7ContentTableEntry tableEntry;
+        G7ContentTableEntry tableEntry{};
         read_string(input_file, tableEntry.name, 64);
         fread(&tableEntry.size, 8, 1, input_file);
         fread(&tableEntry.offset, 8, 1, input_file);
