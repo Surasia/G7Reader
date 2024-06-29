@@ -26,8 +26,5 @@
     <ClInclude Include="src\G7Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\G7Reader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

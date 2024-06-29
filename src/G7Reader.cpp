@@ -1,7 +1,15 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "G7ContentTableEntry.h"
 #include "G7Header.h"
 
-#include "G7Reader.h"
+#include <cstdint>
+#include <cstdio>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 static std::string get_asset_type_name(uint64_t assetType)
 {
@@ -44,17 +52,16 @@ static std::string get_asset_type_name(uint64_t assetType)
     }
 }
 
-void read_string(FILE *file, char *str, size_t size)
+static void read_string(FILE *file, char *str, size_t size)
 {
-    fread(str, sizeof(char), size, file);
+    fread(str, 1, size, file);
     str[size - 1] = '\0';
 }
 
 int read_file(const char *filepath, const std::string &outpath)
 {
-    FILE* input_file;
-    errno_t err = fopen_s(&input_file, filepath, "rb");
-    if (err)
+    FILE* input_file = fopen(filepath, "rb");
+    if (input_file)
     {
         std::cerr << "Unable to open file " << filepath << std::endl;
         return 1;
